@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  cyclid-server:
+    container_name: cyclid-server
+    image: cyclid/server
+    ports:
+      - "8361:8361"
+    environment:
+      MYSQL_HOST: cyclid-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: cyclid
+      CYCLID_DB_INIT: 'true'
+      REDIS_URL: redis://cyclid-redis:6379
+    entrypoint: ["/wait-for-it.sh", "cyclid-db:3306", "-t", "30", "--", "/entrypoint.sh"]
+    depends_on:
+      - cyclid-db
+      - cyclid-sidekiq
+      - cyclid-redis
+  cyclid-sidekiq:
+    container_name: cyclid-sidekiq
+    image: cyclid/sidekiq
+    environment:
+      MYSQL_HOST: cyclid-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: cyclid
+      REDIS_URL: redis://cyclid-redis:6379
+    entrypoint: ["/wait-for-it.sh", "cyclid-db:3306", "-t", "30", "--", "/entrypoint.sh"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  cyclid-ui:
+    container_name: cyclid-ui
+    image: cyclid/ui
+    ports:
+      - "8080:80"
+    depends_on:
+      - cyclid-server
+  cyclid-db:
+    container_name: cyclid-db
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: cyclid
+  cyclid-redis:
+    container_name: cyclid-redis
+    image: redis
