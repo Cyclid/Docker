@@ -1,0 +1,72 @@
+# Docker for Cyclid
+
+We like Docker. This repository contains a few extra files that can help you get Cyclid up and running on Docker. You can use them to build a quick and easy set of containers that will run Cyclid, or you can use them as the basis of your own production installation of Cyclid on Docker.
+
+## Files
+
+### docker-compose.yml
+
+[docker-compose](https://docs.docker.com/compose/overview/) is the quickest way to start the Docker containers that make up Cyclid. The example docker-compose.yml file creates:
+
+  * cyclid-server : A Cyclid API server.
+  * cyclid-sidekiq : A Sidekiq based Cyclid job runner.
+  * cyclid-ui : A Cyclid UI server.
+  * cyclid-redis : A Redis server for the Sidekiq worker queues.
+  * cyclid-db : A MySQL database server.
+  
+Just run `docker-compose up` to start them all.
+
+### start.sh
+
+If you don't want to use docker-compose, the start.sh shell script contains examples of using Docker to start each individual container.
+
+### client-config
+
+A Cyclid client configuration file with the default username & HMAC secret already set. Just copy it to `$HOME/.cyclid` and switch to it with the `cyclid org use` command.
+
+## Cyclid containers
+
+Three ready-built Cyclid containers are available from Docker hub.
+
+### cyclid-server
+
+The following environment variables are supported:
+
+| Name | Default | Description |
+|---|---|---|
+|MYSQL_HOST|127.0.0.1|The host running MySQL.|
+|MYSQL_DATABASE|cyclid|The name of the database to use.|
+|MYSQL_USER|cyclid|Username to use for database connections.|
+|MYSQL_PASSWORD|cyclid|Password to use for database connections.|
+|ADMIN_SECRET|fe150f3939ed0419f32f8079482380f5cc54885a381904c15d861e8dc5989286|The initial 'admin' users HMAC secret.|
+|ADMIN_PASSWORD|cyclid|The initial 'admin' users password.|
+|REDIS_URL|redis://cyclid-redis:6379|URL of the Redis server.|
+|CYCLID_DB_INIT|   |Should the container attempt to run `cyclid-db-init` when it's started?|
+
+These environment variables should probably match the ones you used for the cyclid-sidekiq instance.
+
+### cyclid-sidekiq
+
+The following environment variables are supported:
+
+| Name | Default | Description |
+|---|---|---|
+|MYSQL_HOST|127.0.0.1|The host running MySQL.|
+|MYSQL_DATABASE|cyclid|The name of the database to use.|
+|MYSQL_USER|cyclid|Username to use for database connections.|
+|MYSQL_PASSWORD|cyclid|Password to use for database connections.|
+|REDIS_URL|redis://cyclid-redis:6379|URL of the Redis server.|
+
+These environment variables should probably match the ones you used for the cyclid-server instance.
+
+### cyclid-ui
+
+The following environment variables are supported:
+
+| Name | Default | Description |
+|---|---|---|
+|SERVER_URL|http://cyclid-server:8361|URL to the Cyclid server to connect to directly from the UI server.|
+|CLIENT_URL|http://localhost:8361|URL to the Cyclid server to connect to from the client.|
+|SESSION_SECRET|7b48be7df0efeb669cb899704b3153814980c9a846fd3b1398bcd6cb20e6e5ed|Unicorn session encryption secret.|
+
+The server URL & client URL should both resolve to the same Cyclid server: the server URL should be accessable from within the cyclid-ui container, and the client URL should be accessable from any clients (E.g. a web browser) running *outside* of the container.
