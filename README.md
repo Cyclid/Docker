@@ -2,6 +2,22 @@
 
 We like Docker. This repository contains a few extra files that can help you get Cyclid up and running on Docker. You can use them to build a quick and easy set of containers that will run Cyclid, or you can use them as the basis of your own production installation of Cyclid on Docker.
 
+## Quickstart
+
+  * [Install Docker](https://www.docker.com/community-edition)
+  * Run `docker-compose up`
+  * Point your web-browser at http://localhost:8080
+  * Log in with the username `admin` and the password `cyclid`
+
+To run a job:
+
+  * Install the [Cyclid client](https://rubygems.org/gems/cyclid-client)
+  * Copy the file `docker` to `$HOME/.cyclid/` and activate it with `cyclid org use docker`
+  * Clone one of the example projects and run it with `cyclid job submit <file>`:
+    * [example-ruby-project](https://github.com/Cyclid/example-ruby-project)
+    * [example-python-project](https://github.com/Cyclid/example-python-project)
+    * [example-chef-project](https://github.com/Cyclid/example-chef-project)
+
 ## Files
 
 ### docker-compose.yml
@@ -20,9 +36,9 @@ Just run `docker-compose up` to start them all.
 
 If you don't want to use docker-compose, the start.sh shell script contains examples of using Docker to start each individual container.
 
-### client-config
+### docker
 
-A Cyclid client configuration file with the default username & HMAC secret already set. Just copy it to `$HOME/.cyclid` and switch to it with the `cyclid org use` command.
+A Cyclid client configuration file with the default username & HMAC secret already set. Just copy it to `$HOME/.cyclid` and activate it with the `cyclid org use` command.
 
 ## Cyclid containers
 
