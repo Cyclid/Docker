@@ -7,7 +7,7 @@ We like Docker. This repository contains a few extra files that can help you get
 To start the containers:
 
   * [Install Docker](https://www.docker.com/community-edition)
-  * Run `docker-compose up`
+  * Run `docker-compose pull` and then `docker-compose up`
   * Point your web-browser at http://localhost:8080
   * Log in with the username `admin` and the password `cyclid`
 
