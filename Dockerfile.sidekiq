@@ -26,6 +26,10 @@ COPY files/sidekiq/sidekiq.rb /var/lib/cyclid/sidekiq.rb
 COPY files/sidekiq/entrypoint.sh /entrypoint.sh
 COPY files/wait-for-it.sh /wait-for-it.sh
 
+# Clean up
+RUN apt-get purge -qy build-essential cmake libmysqlclient-dev libsasl2-dev
+RUN apt-get autoremove -qy
+
 # Expose the Docker socket
 VOLUME /var/run/docker.sock
 

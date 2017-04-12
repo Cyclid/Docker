@@ -29,4 +29,8 @@ COPY files/ui/config.ru /var/lib/cyclid-ui/config.ru
 COPY files/ui/unicorn.rb /var/lib/cyclid-ui/unicorn.rb
 COPY files/ui/entrypoint.sh /entrypoint.sh
 
+# Clean up
+RUN apt-get purge -qy build-essential cmake libmysqlclient-dev libsasl2-dev
+RUN apt-get autoremove -qy
+
 ENTRYPOINT /entrypoint.sh
