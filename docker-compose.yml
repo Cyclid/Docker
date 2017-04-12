@@ -4,6 +4,9 @@ services:
   cyclid-server:
     container_name: cyclid-server
     image: cyclid/server
+    build:
+      context: .
+      dockerfile: Dockerfile.server
     ports:
       - "8361:8361"
     environment:
@@ -20,6 +23,9 @@ services:
   cyclid-sidekiq:
     container_name: cyclid-sidekiq
     image: cyclid/sidekiq
+    build:
+      context: .
+      dockerfile: Dockerfile.sidekiq
     environment:
       MYSQL_HOST: cyclid-db
       MYSQL_USER: root
@@ -31,6 +37,9 @@ services:
   cyclid-ui:
     container_name: cyclid-ui
     image: cyclid/ui
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
     ports:
       - "8080:80"
     depends_on:
