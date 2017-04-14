@@ -28,6 +28,7 @@ COPY files/ui/config /etc/cyclid/config
 COPY files/ui/config.ru /var/lib/cyclid-ui/config.ru
 COPY files/ui/unicorn.rb /var/lib/cyclid-ui/unicorn.rb
 COPY files/ui/entrypoint.sh /entrypoint.sh
+COPY files/wait-for-it.sh /wait-for-it.sh
 
 # Clean up
 RUN apt-get purge -qy build-essential cmake libmysqlclient-dev libsasl2-dev

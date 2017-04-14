@@ -34,6 +34,9 @@ services:
     entrypoint: ["/wait-for-it.sh", "cyclid-db:3306", "-t", "30", "--", "/entrypoint.sh"]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - cyclid-db
+      - cyclid-redis
   cyclid-ui:
     container_name: cyclid-ui
     image: cyclid/ui
@@ -42,6 +45,7 @@ services:
       dockerfile: Dockerfile.ui
     ports:
       - "8080:80"
+    entrypoint: ["/wait-for-it.sh", "cyclid-server:8361", "-t", "30", "--", "/entrypoint.sh"]
     depends_on:
       - cyclid-server
   cyclid-db:
