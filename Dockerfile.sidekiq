@@ -19,6 +19,8 @@ RUN apt-get install -qy ruby2.3 ruby2.3-dev build-essential cmake mysql-client l
 RUN mkdir -p /var/lib/cyclid /var/run/cyclid /etc/cyclid /var/log/cyclid
 
 RUN gem install cyclid
+RUN gem install cyclid-bundler-plugin
+RUN gem install cyclid-gh-comment-plugin
 RUN gem install mysql2
 
 COPY files/sidekiq/config /etc/cyclid/config
